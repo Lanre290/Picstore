@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Images;
+use App\Models\Events;
 
 class Views extends Controller
 {
@@ -31,11 +33,27 @@ class Views extends Controller
             return view('auth.otp-ver');
         }
         else{
-            return view('fallback.404');
+            return view('404.index');
         }
     }
 
     public function dashboard(){
         return view('index.dashboard');
+    }
+
+    public function event($event_id){
+        $isExists = Events::where('id', $event_id)->count() > 0;
+
+        // if($isExists == false){
+        //     return view('404.index');
+        // }
+        // else{  
+        //     $event = Events::where('id', $event_id)->first();
+        //     $images = Images::where('event_id', $event->id)->get();
+
+        //     return view('index.event')->with((['data' => $event, 'images' => $images]));
+        // }
+
+        return view('index.event');
     }
 }

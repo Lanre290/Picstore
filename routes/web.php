@@ -27,6 +27,7 @@ Route::get('/login', [Views::class, 'login'])->name('login');
 Route::get('/signup', [Views::class, 'signup'])->name('signup');
 Route::get('/otp', [Views::class, 'otp'])->name('otp');
 Route::get('/dashboard', [Views::class, 'dashboard'])->name('dashboard');
+Route::get('/event/{id}', [Views::class, 'event'])->name('event');
 
 
 

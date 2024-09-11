@@ -16,6 +16,8 @@ return new class extends Migration
             $table->integer('user_id');
             $table->string('event_link');
             $table->string('title');
+            $table->string('date');
+            $table->timestamp('timestamp');
             $table->timestamps();
         });
     }

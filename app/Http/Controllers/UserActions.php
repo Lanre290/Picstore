@@ -84,10 +84,17 @@ class UserActions extends Controller
         $link = $this->generateLink();
         $user_id = session('user')->id;
 
+        $months = ['','January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        $year = (int)date("Y");
+        $month = (int)date("m");
+        $month = $months[$month];
+        $day = (int)date("d");
+
         $event = Events::create([
             'user_id' => $user_id,
             'event_link' => $link,
-            'title' => $title
+            'title' => $title,
+            'date' => $day.' '.$month.', '.$year
         ]);
 
 
