@@ -1,6 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserActions;
+use App\Http\Controllers\Views;
+use Illuminate\Support\Facades\Mail;
+
+Route::post('/api/auth/otp', [AuthController::class, 'OTP'])->name('api/auth/otp');
 
 
 Route::prefix('/api')->group(function(){
@@ -10,4 +16,8 @@ Route::prefix('/api')->group(function(){
 
     //Upload image route
     Route::post('upload-image', [UserActions::class, 'uploadImage'])->name('api/upload-image');
+    Route::post('reset-link', [UserActions::class, 'resetLink'])->name('api/reset-link');
+    Route::post('create-event', [UserActions::class, 'createEvent'])->name('api/create-event');
 });
+
+Route::get('/event/{id}', [Views::class, 'Events'])->name('/event');

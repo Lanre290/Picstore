@@ -8,6 +8,8 @@ use App\Models\Users;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\OTPMail;
+use Illuminate\Support\Facades\Mail;
 
 
 class AuthController extends Controller
@@ -37,13 +39,13 @@ class AuthController extends Controller
             return response()->json(['error' => 'Email already exists.','data' => ''], 409 );
         }
 
-        Users::create([
+        session(['user_details' => [
             'name' => $name,
             'email' => $email,
-            'pwd' => Hash::make($pwd), 
-            'bio' => '',
-            'image_path' => ''
-        ]);
+            'pwd' => Hash::make($pwd)
+        ]]);
+
+        $this->OTP($email);
 
         return response()->json(['data' => 'ok'], 200);
     }
@@ -70,11 +72,8 @@ class AuthController extends Controller
                     $Hashedpwd = Users::where('email', $email)->pluck('pwd')->first();
                     
                     if(Hash::check($pwd, $Hashedpwd)){
-                        $userData = Users::where('email', $email)->select('id','email','name','bio','image_path','cover_img_path')->first();
+                        $userData = Users::where('email', $email)->select('id','email','name')->first();
                         session(['user' => $userData]);
-                        if(session('user')->image_path == ''){
-                            session('user')->image_path = asset('img/users_dp/default.png');
-                        }
                         return response(['data' => true], 200);
                     }
                     else{
@@ -86,6 +85,28 @@ class AuthController extends Controller
             return response(['error' => $th]);
         }
     }
+
+    public function OTP(){
+        $email = 'lanre2967@gmail.com';
+        $data = [
+            'name' => 'Ashiru Sheriff',
+            'email' => 'lanre2967@gmail',
+            'pwd' => 'fd328u908'
+        ];
+
+        Mail::to($email)->send(new OTPMail($data));
+    }
+
+    public function verifyOTP(Request $request){
+        $request->validate([
+            'token' => 'required|integer',
+        ]);  
+
+
+        Users::create(session('user_details'));
+    }
+
+
 
     public function logout(Request $request){
 
