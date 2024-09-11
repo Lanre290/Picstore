@@ -17,4 +17,25 @@ class Views extends Controller
             return response()->json(['data' => $data], 200);
         }
     }
+
+    public function login(){
+        return view('auth.login');
+    }
+
+    public function signup(){
+        return view('auth.signup');
+    }
+
+    public function otp(){
+        if(null != session('user_details')){
+            return view('auth.otp-ver');
+        }
+        else{
+            return view('fallback.404');
+        }
+    }
+
+    public function dashboard(){
+        return view('index.dashboard');
+    }
 }

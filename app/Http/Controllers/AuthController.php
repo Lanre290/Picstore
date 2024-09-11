@@ -88,11 +88,7 @@ class AuthController extends Controller
 
     public function OTP(){
         $email = 'lanre2967@gmail.com';
-        $data = [
-            'name' => 'Ashiru Sheriff',
-            'email' => 'lanre2967@gmail',
-            'pwd' => 'fd328u908'
-        ];
+        $data = session('user_details');
 
         Mail::to($email)->send(new OTPMail($data));
     }
@@ -102,8 +98,14 @@ class AuthController extends Controller
             'token' => 'required|integer',
         ]);  
 
-
-        Users::create(session('user_details'));
+        $token = $request->token;
+        if(Hash::check($token, session('user_details')->otp)){
+            Users::create(session('user_details'));
+            return response()->json(['response' => 'ok', 'user_data' => session('user_details')], 200);
+        }
+        else{
+            return respone()->json(['error', 'incorrect OTP Entered.'], 400);
+        }  
     }
 
 

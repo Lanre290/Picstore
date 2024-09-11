@@ -27,7 +27,8 @@ class OTPMail extends Mailable
     {
         // Generate the OTP and extract the user's name
         $otp = mt_rand(1000, 9999);
-        $name = 'Sheriff';  // Hardcoded name or $this->user->name for dynamic
+        session('user_details')->otp = Hash::make($otp);
+        $name= explode(' ', $this->user->name)[0];
 
         // Return the view with the necessary data
         return $this->subject('Verify your Email')
