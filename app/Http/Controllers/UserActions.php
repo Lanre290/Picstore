@@ -84,6 +84,10 @@ class UserActions extends Controller
         $link = $this->generateLink();
         $user_id = session('user')->id;
 
+        if(empty($title)){
+            return response()->json(['error' => 'Unexpected response.'], 401);
+        }
+
         $months = ['','January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         $year = (int)date("Y");
         $month = (int)date("m");
