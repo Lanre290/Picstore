@@ -1,4 +1,4 @@
-@include('includes.header-script', ['url' => 'The wedding party'])
+@include('includes.header-script', ['url' => {{$data->title}}])
 @include('includes.session-auth');
 
 <body>
@@ -10,7 +10,7 @@
                 <h3 class="text-center">Upload picture</h3>
                 <input type="file" name="" id="post_input" class="absolute top-0 left-0 right-0 bottom-0 opacity-0 cursor-pointer" multiple>
             </div>
-            <button class="bg-blue-400 w-11/12 mb-2 md:w-auto cursor-pointer px-4 py-3 text-center text-gray-50 ml-3 hover:bg-blue-500" data-id="" onclick="resetEventLink(this)">
+            <button class="bg-blue-400 w-11/12 mb-2 md:w-auto cursor-pointer px-4 py-3 text-center text-gray-50 ml-3 hover:bg-blue-500" data-id="{{$data->id}}" onclick="resetEventLink(this)">
                 Reset Link
             </button>
             <button class="bg-blue-400 w-11/12 mb-2 md:w-auto cursor-pointer text-center px-4 py-3 text-gray-50 ml-3 hover:bg-blue-500" data-link='' onclick="copyEventLink()">
@@ -19,12 +19,15 @@
         </div>
 
         <div class="w-full border-t border-gray-300 mt-3 flex content-start justify-start flex-wrap h-screen overflow-y-scroll pb-56">
-            <div class="w-full mm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 h-52 cursor-pointer relative border border-gray" onclick="showImageFullScreen(this, event)">
-                <img src="{{asset('img/favicon.png')}}" alt="" class="w-full h-full object-cover" id="image">
-                <a href={{asset('img/favicon.png')}} class="absolute bottom-1 right-1 bg-transparent text-3xl text-gray-500 hover:bg-gray-300 p-3 hover:bg-opacity-50" onclick="stopPropagation(event)" download>
-                    <i class="fa fa-download"></i>
-                </a>
-            </div>
+
+            @foreach ($images as $image)
+                <div class="w-full mm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 h-52 cursor-pointer relative border border-gray" onclick="showImageFullScreen(this, event)">
+                    <img src="{{asset($image->image_path)}}" alt="" class="w-full h-full object-cover" id="image">
+                    <a href={{asset($image->image_path)}} class="absolute bottom-1 right-1 bg-transparent text-3xl text-gray-500 hover:bg-gray-300 p-3 hover:bg-opacity-50" onclick="stopPropagation(event)" download>
+                        <i class="fa fa-download"></i>
+                    </a>
+                </div>
+            @endforeach
             
         </div>
         
@@ -34,7 +37,7 @@
         <div class="w-full h-full md:w-4/5 md:h-4/5 z-50 bg-gray-50 p-2 md:p-10">
             <div class="flex flex-col-reverse md:flex-row justify-between">
                 <div class="flex flex-col md:flex-row">
-                    <button class="bg-blue-400 w-11/12 mb-2 md:w-auto cursor-pointer text-center px-4 py-3 text-gray-50 ml-3 hover:bg-blue-500" id="upload_pictures_btn">
+                    <button class="bg-blue-400 w-11/12 mb-2 md:w-auto cursor-pointer text-center px-4 py-3 text-gray-50 ml-3 hover:bg-blue-500" data-id="{{$data->id}}" id="upload_pictures_btn">
                         Upload Pictures
                     </button>
                     <div class="bg-blue-400 w-11/12 mb-2 md:w-auto cursor-pointer px-4 py-3 text-gray-50 ml-3 hover:bg-blue-500 relative">
@@ -161,11 +164,12 @@
             postImages.forEach((file, index) => {
                 formData.append(`files[]`, file);
             });
+            formData.append(`id`, btn.dataset.id);
             const response = await fetch("api/upload-image", {
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'X-CSRF-TOKEN': $('input[name="csrf-token-save-images"]').attr('content');
+                    'X-CSRF-TOKEN': $('input[name="csrf-token-save-images"]').attr('value');
                 }
             });
 
@@ -176,19 +180,18 @@
                 toastr.info('post successful.');
             } else {
                 let res = await response.json();
-                toastr.error('Error connecting to database.')
+                toastr.error('Error connecting to database.');
                 console.error(res);
             }
         }
         catch(error){
             toastr.error(error);
-            console.error(error)
+            console.error(error);
         }
         finally{
-            btn.disabled = false;
-            btn.style.backgroundColor = 'rgb(59 130 246)';
-            btn.style.cursor = 'pointer';
-            btn.innerHTML = 'Post';
+            document.getElementById('upload_images').style.display = 'none';
+            postImages = [];
+            document.getElementById('post_images_div').innerHTML = '';
         }
     }
 

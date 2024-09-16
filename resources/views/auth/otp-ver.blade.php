@@ -15,8 +15,12 @@
     </div>
     <div class="flex flex-row w-full justify-center mt-5">
         <h3 class="text-gray-90 text-center">Didn't get OTP ?,&nbsp;</h3>
-        <h3 class="text-blue-500 cursor-pointer hover:underline">Resend OTP</h3>
+        <h3 class="text-blue-500 cursor-pointer hover:underline" id="resend_otp">Resend OTP</h3>
     </div>
+
+    <input type="hidden" name="_token" value="{{csrf_token()}}">
+    <input type="hidden" id="email" value="{{session('user_details')['email']}}">
+    <input type="hidden" id="pwd" value="{{session('user_details')['pwd']}}">
 
     @include('includes.loading')
 </body>
@@ -30,7 +34,69 @@
 </style>
 
 <script>
+
+    document.getElementById('resend_otp').onclick = async () => {
+        document.getElementById('loading').style.display = 'flex';
+        const response = await fetch("api/auth/otp", {
+            method: 'POST',
+            body: formData,
+        });
+
+
+        if (response.ok) {
+            
+        } else {
+            let res = await response.json();
+            toastr.error(res.error);
+        }
+        
+        document.getElementById('loading').style.display = 'none';
+    }
     
+    async function signIn(email, pwd){ 
+        const validateEmail = (email) => {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        };
+
+        try {
+            if(email.length < 1 ||pwd.length < 1){
+                throw new Error('Fill in all fields.');
+            }
+            if(!validateEmail(email)){
+                throw new Error('Invalid Email.');
+            }
+
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('pwd', pwd);
+
+            try {
+                const response = await fetch("api/auth/login", {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                    }
+                });
+
+
+                if (response.ok) {
+                    window.location.href = '/dasboard';
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error);
+                }
+            } catch (error) {
+                toastr.error(error);
+            }
+        } catch (error) {
+            toastr.error(error);
+        }
+
+        }
+
+
     document.querySelectorAll('.otp_input').forEach((element, index) => {
         element.oninput = async () => {
             if(element.value.length == 1){
@@ -53,6 +119,7 @@
                         let res = await response.json();
                         let email = res.user_data.email;
                         let pwd = res.user_data.pwd;
+                        console.log(res.user_data)
 
                         signIn(email, pwd);
                     } else {

@@ -39,22 +39,23 @@ class Views extends Controller
     }
 
     public function dashboard(){
-        session(['user_details' => null]);
-        return view('index.dashboard');
+        $events = Events::where('user_id', session('user')->id)->get();
+
+        return view('index.dashboard', ['events' => $events]);
     }
 
     public function event($event_link){
         $isExists = Events::where('event_link', $event_link)->count() > 0;
-        // if($isExists == false){
-        //     return view('404.index');
-        // }
-        // else{  
-        //     $event = Events::where('event_link', $event_link)->first();
-        //     $images = Images::where('event_id', $event->id)->get();
+        if($isExists == false){
+            return view('404.index');
+        }
+        else{  
+            $event = Events::where('event_link', $event_link)->first();
+            $images = Images::where('event_id', $event->id)->get();
 
-        //     return view('index.event')->with((['data' => $event, 'images' => $images]));
-        // }
+            return view('index.event')->with((['data' => $event, 'images' => $images]));
+        }
 
-        return view('index.event');
+        // return view('index.event');
     }
 }

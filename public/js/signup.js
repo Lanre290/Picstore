@@ -70,50 +70,6 @@ async function validateSignUp(event){
 
 }
 
-
-async function signIn(email, pwd){
-
-    const validateEmail = (email) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    };
-
-    try {
-        if(email.length < 1 ||pwd.length < 1){
-            throw new Error('Fill in all fields.');
-        }
-        if(!validateEmail(email)){
-            throw new Error('Invalid Email.');
-        }
-        const formData = new FormData(form);
-
-        try {
-            const response = await fetch("api/auth/login", {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-                }
-            });
-
-
-            if (response.ok) {
-                window.location.href = '/dasboard';
-            } else {
-                const errorData = await response.json();
-                signupButton.removeAttribute('disabled');
-                throw new Error(errorData.error);
-            }
-        } catch (error) {
-            toastr.error(error);
-        }
-    } catch (error) {
-        toastr.error(error);
-        signupButton.removeAttribute('disabled');
-    }
-
-}
-
     form.addEventListener('submit', validateSignUp);
     signupButton.addEventListener('click', validateSignUp);
 }

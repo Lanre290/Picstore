@@ -89,16 +89,23 @@ class AuthController extends Controller
     public function OTP($email){
         $data = session('user_details');
 
-        Mail::to($email)->send(new OTPMail($data));
+        $result = Mail::to($email)->send(new OTPMail($data));
+
+        if($result){
+            return response()->json(['data' => true], 200);
+        }
+        else{
+            return response()->json(['data' => false, 'error' => 'Error sending mail.'], 500);
+        }
     }
 
     public function verifyOTP(Request $request){
         $request->validate([
-            'token' => 'required|integer',
+            'token' => 'required',
         ]);  
 
         $token = $request->token;
-        if(Hash::check($token, session('user_details')['otp'])){
+        if(Hash::equals($token, session('user_details')['otp'])){
             $details = session('user_details');
             Users::create($details);
             session(['user_details' => null]);
