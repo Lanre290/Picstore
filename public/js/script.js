@@ -30,6 +30,33 @@ function openCreateEvent(){
 }
 
 function copyEventLink(element){
-    navigator.clipboard.writeText(element.dataset.link);
+    navigator.clipboard.writeText(window.location.href);
     toastr.info('Link copied to clipboard.');
 }
+
+
+async function resetEventLink(element){
+    document.getElementById('loading').style.display = 'flex';
+    let id = element.dataset.id;
+    let formData = new FormData();
+    formData.append('id', id)
+    const response = await fetch('/api/reset-link', {
+        method: 'POST',
+        body: formData
+    });
+
+    if (response.ok) {
+        let res = await response.json();
+        let url = res.new_link;
+        document.location.replace(`/event/${url}`);
+        document.getElementById('loading').style.display = 'none';
+    } else {
+        toastr.error('Error');
+        document.getElementById('loading').style.display = 'none';
+    }
+}
+
+function createEvent(element){
+
+}
+

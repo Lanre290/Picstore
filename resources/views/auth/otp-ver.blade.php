@@ -1,4 +1,4 @@
-@include('includes.preauth-header', ['url' => 'Verify your account'])
+@include('includes.preauth-header', ['url' => 'Verify your account', 'js' => 'signup.js']);
 
 <body class="w-screen h-screen flex flex-col justify-center items-center">
     @include('includes.topnav')
@@ -17,6 +17,8 @@
         <h3 class="text-gray-90 text-center">Didn't get OTP ?,&nbsp;</h3>
         <h3 class="text-blue-500 cursor-pointer hover:underline">Resend OTP</h3>
     </div>
+
+    @include('includes.loading')
 </body>
 
 
@@ -28,10 +30,43 @@
 </style>
 
 <script>
+    
     document.querySelectorAll('.otp_input').forEach((element, index) => {
-        element.oninput = () => {
+        element.oninput = async () => {
             if(element.value.length == 1){
                 index !== 3  && element.nextElementSibling.focus();
+                if(index === 3){
+
+                    document.getElementById('loading').style.display = 'flex';
+                    let token = ''
+                    document.querySelectorAll('.otp_input').forEach((element) => {
+                        token += element.value;
+                    }); 
+                    let formData = new FormData();
+                    formData.append('token', token)
+                    const response = await fetch("api/auth/check-otp", {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (response.ok) {
+                        let res = await response.json();
+                        let email = res.user_data.email;
+                        let pwd = res.user_data.pwd;
+
+                        signIn(email, pwd);
+                    } else {
+                        let error = await response.json();
+                        document.getElementById('loading').style.display = 'none';
+                        toastr.error(error.error);
+                        document.querySelectorAll('.otp_input').forEach((element, index) => {
+                            element.value = '';
+                            if(index == 0){
+                                element.focus();
+                            }
+                        }); 
+                    }
+                }
             }
             else if(element.value.length < 1){
                 index !== 0 && element.previousElementSibling.focus();

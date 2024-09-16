@@ -1,4 +1,7 @@
 @include('includes.header-script', ['url' => 'Dashboard - Ashiru Sheriff'])
+@include('includes.session-auth');
+
+
 <body>
     @include('includes.topnav')
     <div class="fixed top-10 right-0 left-0 flex flex-col pt-10">
@@ -23,10 +26,10 @@
                 </button>
             </div>
 
-            <form action="" class="w-full flex flex-col mt-24 justify-center items-center" method="post">
+            <form action="" class="w-full flex flex-col mt-24 md:mt-2 justify-center items-center" method="post">
                 <input type="text" name="title" id="title" placeholder="Title..." class="p-4 text-gray-800 bg-gray-900 bg-opacity-5 w-11/12 mx-auto mb-4"/>
 
-                <button type="submit" class="bg-blue-400 w-11/12 mb-2 md:w-auto cursor-pointer text-center px-4 py-3 text-gray-50 md:ml-3 hover:bg-blue-500">
+                <button type="submit" class="bg-blue-400 w-11/12 mb-2 md:w-auto cursor-pointer text-center px-4 py-3 text-gray-50 md:ml-3 hover:bg-blue-500" onclick="createEvent(element)">
                    Create event
                 </button>
             </form>

@@ -5,6 +5,7 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Hash;
 
 class OTPMail extends Mailable
 {
@@ -27,8 +28,10 @@ class OTPMail extends Mailable
     {
         // Generate the OTP and extract the user's name
         $otp = mt_rand(1000, 9999);
-        session('user_details')->otp = Hash::make($otp);
-        $name= explode(' ', $this->user->name)[0];
+        $userDetails = session('user_details');
+        $userDetails['otp'] = Hash::make($otp);
+        session(['user_details' => (array) $userDetails]);
+        $name= explode(' ', $this->user['name'])[0];
 
         // Return the view with the necessary data
         return $this->subject('Verify your Email')

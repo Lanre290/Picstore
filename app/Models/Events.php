@@ -9,7 +9,7 @@ class Events extends Model
 {
     use HasFactory;
 
-    protected $table = 'user';
+    protected $table = 'events';
 
     public $timestamps = false;
 

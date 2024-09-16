@@ -7,8 +7,9 @@ use App\Http\Controllers\Views;
 use App\Http\Controllers\FallbackController;
 use Illuminate\Support\Facades\Mail;
 
-Route::post('/api/auth/otp', [AuthController::class, 'OTP'])->name('api/auth/otp');
 
+Route::post('/api/auth/otp', [AuthController::class, 'OTP'])->name('api/auth/otp');
+Route::post('/api/auth/check-otp', [AuthController::class, 'verifyOTP'])->name('api/auth/check-otp');
 
 Route::prefix('/api')->group(function(){
     // Authentication routes
