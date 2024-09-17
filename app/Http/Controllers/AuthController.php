@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Users;
+use App\Models\ForgottenPasswordModel;
+use App\Http\Controllers\userActions;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +16,12 @@ use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
+
+    protected $userActions;
+    public function __construct(Views $userActions){
+        // Dependency inject for userActions controller
+        $this->userActions = $userActions;
+    }
     
     public function signup(Request $request){
         $request->validate([
@@ -120,6 +128,49 @@ class AuthController extends Controller
         }  
     }
 
+
+    public function forgotPassword(Request $request){
+        $request->validate([
+            'email' => 'string|required',
+        ]); 
+
+        $email = $request->email;
+
+
+        if(empty($email)){
+            return response()->json(['error' => 'Unexpected response.'], 500);
+        }
+        else{
+            $data = Users::where('email', $email)->first();
+            $token = $this->userActions->generateLink();
+            $data['link'] = $token;
+            
+            ForgottenPasswordModel::create([
+                'email' => $email,
+                'token' => $token,
+                'time' => time() + (60 * 60)
+            ]);
+            $result = Mail::to($email)->send(new forgotPasswordMail($data));
+        }
+    }
+
+    public function resetPassword(Request $request){
+        $request->validate([
+            'pwd' => 'string|required',
+        ]);
+
+        $pwd = $request->pwd;
+
+        if(empty($pwd)){
+            return response()->json(['error' => 'Unexpected response.'], 500);
+        }
+        else{
+
+            $response = Users::where('id', $id)->update([
+
+            ]);
+        }
+    }
 
 
     public function logout(Request $request){
