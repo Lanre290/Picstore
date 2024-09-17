@@ -1,4 +1,4 @@
-@include('includes.preauth-header', ['url' => 'Verify your account', 'js' => 'signup.js']);
+@include('includes.preauth-header', ['url' => 'Verify your account', 'js' => 'signup.js'])
 
 <body class="w-screen h-screen flex flex-col justify-center items-center">
     @include('includes.topnav')
