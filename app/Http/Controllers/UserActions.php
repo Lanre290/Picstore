@@ -24,10 +24,10 @@ class UserActions extends Controller
 
         if($event_exists == true){
             if($uploadedFiles){
-                $rel_path = public_path('img/events/'.$event_id.'/');
+                $rel_path = 'img/events/'.$event_id.'/';
 
                 if(!File::exists($rel_path)){
-                    File::makeDirectory($rel_path);
+                    File::makeDirectory($rel_path, 0777, true);
                 }
 
                 foreach ($uploadedFiles as $file) {
@@ -39,10 +39,6 @@ class UserActions extends Controller
                         'event_id' => $event_id
                     ]);
                 }
-
-                return response()->json([
-                    'url' => route('post', ['id' => $post_id])
-                ]);
             }
             else{
                 return response()->json(['error' => 'Error processing data.'], 500);

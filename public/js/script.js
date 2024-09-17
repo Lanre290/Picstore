@@ -1,4 +1,9 @@
 function closeUploadImage(){
+    let btn = document.getElementById('upload_pictures_btn');
+    btn.innerText = 'Save images';
+    btn.disabled = false;
+    btn.style.backgroundColor = ' rgb(96 165 250)';
+    btn.style.cursor = 'pointer';
    document.getElementById('upload_images').style.display = 'none';
    postImages = [];
    document.getElementById('post_images_div').innerHTML = '';

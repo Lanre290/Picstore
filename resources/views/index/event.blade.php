@@ -1,4 +1,4 @@
-@include('includes.header-script', ['url' => '{{$data->title}}'])
+@include('includes.header-script', ['url' => $data->title])
 @include('includes.session-auth');
 
 <body>
@@ -33,18 +33,17 @@
             @endforeach
             
         </div>
-        
     </div>
 
-    <div class="fixed top-0 bottom-0 right-0 left-0 bg-black bg-opacity-50 flex items-center justify-center z-40" style="display: none;" id="upload_images">
+    <div class="fixed top-0 bottom-0 right-0 left-0 bg-black bg-opacity-50 flex items-center justify-center z-30" style="display: none;" id="upload_images">
         <div class="w-full h-full md:w-4/5 md:h-4/5 z-50 bg-gray-50 p-2 md:p-10">
             <div class="flex flex-col-reverse md:flex-row justify-between">
                 <div class="flex flex-col md:flex-row">
-                    <button class="bg-blue-400 w-11/12 mb-2 md:w-auto cursor-pointer text-center px-4 py-3 text-gray-50 ml-3 hover:bg-blue-500" data-id="{{$data->id}}" id="upload_pictures_btn">
-                        Upload Pictures
+                    <button class="bg-blue-400 w-11/12 mb-2 md:w-auto flex flex-row justify-center items-center cursor-pointer text-center px-4 py-3 text-gray-50 ml-3 hover:bg-blue-500" data-id="{{$data->id}}" id="upload_pictures_btn" onclick="saveImages()">
+                        Save Pictures
                     </button>
                     <div class="bg-blue-400 w-11/12 mb-2 md:w-auto cursor-pointer px-4 py-3 text-gray-50 ml-3 hover:bg-blue-500 relative">
-                        <h3 class="text-center">Add Pictures</h3>
+                        <h3 class="text-center">Add more Pictures</h3>
                         <input type="file" name="" id="post_input_2" class="absolute top-0 left-0 right-0 bottom-0 opacity-0 cursor-pointer" multiple>
                     </div>
                 </div>
@@ -121,6 +120,7 @@
     document.getElementById('event-link-div').innerText = window.location.href;
 
     function putPictures(){
+        document.getElementById('loading').style.display = 'flex';
         let arr = [...document.getElementById('post_input').files, ...document.getElementById('post_input_2').files];
         document.getElementById('upload_images').style.display = 'flex';
 
@@ -151,9 +151,10 @@
         }
         document.getElementById('post_input').value = null;
         document.getElementById('post_input_2').value = null;
+        document.getElementById('loading').style.display = 'none';
     }
 
-    function saveImages(){
+    async function saveImages(){
         event.preventDefault();
         let btn = document.getElementById('upload_pictures_btn');
         btn.innerHTML = `
@@ -163,16 +164,16 @@
         btn.style.cursor = 'not-allowed';
 
         try{
-            let formData = new FormData(document.getElementById('make-post-form'));
+            let formData = new FormData();
             postImages.forEach((file, index) => {
                 formData.append(`files[]`, file);
             });
             formData.append(`id`, btn.dataset.id);
-            const response = await fetch("api/upload-image", {
+            const response = await fetch("/api/upload-image", {
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'X-CSRF-TOKEN': $('input[name="csrf-token-save-images"]').attr('value');
+                    'X-CSRF-TOKEN': $('input[name="csrf-token-save-images"]').attr('value')
                 }
             });
 
@@ -182,6 +183,7 @@
                 window.location.reload();
                 toastr.info('post successful.');
             } else {
+                console.log(response.json());
                 let res = await response.json();
                 toastr.error('Error connecting to database.');
                 console.error(res);
@@ -192,6 +194,11 @@
             console.error(error);
         }
         finally{
+            let btn = document.getElementById('upload_pictures_btn');
+            btn.innerText = 'Save images';
+            btn.disabled = false;
+            btn.style.backgroundColor = ' rgb(96 165 250)';
+            btn.style.cursor = 'pointer';
             document.getElementById('upload_images').style.display = 'none';
             postImages = [];
             document.getElementById('post_images_div').innerHTML = '';
