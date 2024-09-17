@@ -1,21 +1,24 @@
-@include('includes.header-script', ['url' => {{$data->title}}])
+@include('includes.header-script', ['url' => '{{$data->title}}'])
 @include('includes.session-auth');
 
 <body>
     @include('includes.topnav')
 
     <div class="fixed top-10 right-0 left-0 flex flex-col pt-10">
+        <h3 class="text-5xl text-gray-900 ml-2 mb-5">{{  $data->title }}</h3>
         <div class="flex flex-col md:flex-row w-full">
             <div class="bg-blue-400 w-11/12 mb-2 md:w-auto cursor-pointer px-4 py-3 text-gray-50 ml-3 hover:bg-blue-500 relative">
                 <h3 class="text-center">Upload picture</h3>
                 <input type="file" name="" id="post_input" class="absolute top-0 left-0 right-0 bottom-0 opacity-0 cursor-pointer" multiple>
             </div>
-            <button class="bg-blue-400 w-11/12 mb-2 md:w-auto cursor-pointer px-4 py-3 text-center text-gray-50 ml-3 hover:bg-blue-500" data-id="{{$data->id}}" onclick="resetEventLink(this)">
-                Reset Link
-            </button>
-            <button class="bg-blue-400 w-11/12 mb-2 md:w-auto cursor-pointer text-center px-4 py-3 text-gray-50 ml-3 hover:bg-blue-500" data-link='' onclick="copyEventLink()">
-                Copy Event Link <i class="fa fa-link"></i>
-            </button>
+            @if ($data->user_id == session('user')->id)
+                <button class="bg-blue-400 w-11/12 mb-2 md:w-auto cursor-pointer px-4 py-3 text-center text-gray-50 ml-3 hover:bg-blue-500" data-id="{{$data->id}}" onclick="resetEventLink(this)">
+                    Reset Link
+                </button>
+                <button class="bg-blue-400 w-11/12 mb-2 md:w-auto cursor-pointer text-center px-4 py-3 text-gray-50 ml-3 hover:bg-blue-500" data-link='' onclick="copyEventLink()">
+                    Copy Event Link <i class="fa fa-link"></i>
+                </button>
+            @endif
         </div>
 
         <div class="w-full border-t border-gray-300 mt-3 flex content-start justify-start flex-wrap h-screen overflow-y-scroll pb-56">

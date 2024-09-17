@@ -39,7 +39,6 @@
         document.getElementById('loading').style.display = 'flex';
         const response = await fetch("api/auth/otp", {
             method: 'POST',
-            body: formData,
         });
 
 
@@ -82,7 +81,7 @@
 
 
                 if (response.ok) {
-                    window.location.href = '/dasboard';
+                    window.location.href = '/dashboard';
                 } else {
                     const errorData = await response.json();
                     throw new Error(errorData.error);
@@ -98,6 +97,9 @@
 
 
     document.querySelectorAll('.otp_input').forEach((element, index) => {
+        if(index == 0){
+            element.focus();
+        }
         element.oninput = async () => {
             if(element.value.length == 1){
                 index !== 3  && element.nextElementSibling.focus();

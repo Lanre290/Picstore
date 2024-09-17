@@ -103,7 +103,7 @@ class UserActions extends Controller
 
 
         if($event){
-            return response()->json(['data' => $event], 200);
+            return redirect('/event'.'/'.$event->event_link);
         }
         else{
             return response()->json(['error' => 'Error processing data.'], 500);
@@ -130,12 +130,6 @@ class UserActions extends Controller
             }
         }
 
-        $isExists = Events::where('id', $event_id)->count() > 0;
-        if($isExists == true){
-            return $this->generateLink($number_stored);
-        }
-        else{
-            return '/event'.'/'.$number;
-        }
+        return $number;
     }
 }

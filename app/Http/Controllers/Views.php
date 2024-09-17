@@ -9,14 +9,14 @@ use App\Models\Events;
 
 class Views extends Controller
 {
-    public function  Events($event_id){
-        $isExists = Events::where('id', $event_id)->count() > 0;
+    public function  Events($event_link){
+        $isExists = Events::where('link', $event_link)->count() > 0;
         
         if($isExists == false){
             return response()->json(['error' => 'Event does not exist.'], 404);
         }  
         else{
-            $data = Events::where('id', $event_id)->get();
+            $data = Events::where('id', $event_link)->get();
             return response()->json(['data' => $data], 200);
         }
     }
@@ -39,23 +39,32 @@ class Views extends Controller
     }
 
     public function dashboard(){
-        $events = Events::where('user_id', session('user')->id)->get();
+        if (null != session('user')) {
+            $events = Events::where('user_id', session('user')->id)->get();
+            $count = Events::where('user_id', session('user')->id)->count();
 
-        return view('index.dashboard', ['events' => $events]);
+            return view('index.dashboard', ['events' => $events, 'count' => $count]);
+        }
+        else{
+            return redirect('/login');
+        }
     }
 
     public function event($event_link){
-        $isExists = Events::where('event_link', $event_link)->count() > 0;
-        if($isExists == false){
-            return view('404.index');
-        }
-        else{  
-            $event = Events::where('event_link', $event_link)->first();
-            $images = Images::where('event_id', $event->id)->get();
+        if(null != session('user')){
+            $isExists = Events::where('event_link', $event_link)->count() > 0;
+            if($isExists == false){
+                return view('404.index');
+            }
+            else{  
+                $event = Events::where('event_link', $event_link)->first();
+                $images = Images::where('event_id', $event->id)->get();
 
-            return view('index.event')->with((['data' => $event, 'images' => $images]));
+                return view('index.event')->with((['data' => $event, 'images' => $images]));
+            }
         }
-
-        // return view('index.event');
+        else{
+            return redirect('/login');
+        }
     }
 }

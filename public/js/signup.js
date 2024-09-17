@@ -44,13 +44,13 @@ async function validateSignUp(event){
             if (response.ok) {
                 window.location.href = '/otp';
             } else {
-                // Handle errors (e.g., show an error message)
                 const errorData = await response.json();
                 console.log(errorData);
                 signupButton.removeAttribute('disabled');
-                throw new Error(errorData.error);
+                throw new Error(response.statusText == 'Internal Server Error' ? 'Please check your internet and try again.' : errorData.error);
             }
         } catch (error) {
+            console.error(error);
             toastr.error(error);
         }
     } catch (error) {

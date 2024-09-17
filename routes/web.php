@@ -8,6 +8,13 @@ use App\Http\Controllers\FallbackController;
 use Illuminate\Support\Facades\Mail;
 
 
+
+Route::get('/', function () {
+    return redirect('/dashboard');
+});
+
+
+
 Route::post('/api/auth/otp', [AuthController::class, 'OTP'])->name('api/auth/otp');
 Route::post('/api/auth/check-otp', [AuthController::class, 'verifyOTP'])->name('api/auth/check-otp');
 
@@ -20,6 +27,7 @@ Route::prefix('/api')->group(function(){
     Route::post('upload-image', [UserActions::class, 'uploadImage'])->name('api/upload-image');
     Route::post('reset-link', [UserActions::class, 'resetLink'])->name('api/reset-link');
     Route::post('create-event', [UserActions::class, 'createEvent'])->name('api/create-event');
+    Route::post('forgot-password', [AuthController::class, 'forgotPassword'])->name('api/forgot-password');
 });
 
 

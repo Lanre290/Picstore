@@ -86,7 +86,10 @@ class AuthController extends Controller
         }
     }
 
-    public function OTP($email){
+    public function OTP($email = ''){
+        if($email == ''){
+            $email = session('user_details')['email'];
+        }
         $data = session('user_details');
 
         $result = Mail::to($email)->send(new OTPMail($data));
@@ -107,8 +110,9 @@ class AuthController extends Controller
         $token = $request->token;
         if(Hash::check($token, session('user_details')['otp'])){
             $details = session('user_details');
-            Users::create($details);
+            $user = Users::create($details);
             session(['user_details' => null]);
+            session(['user' => $user]);
             return response()->json(['response' => 'ok', 'user_data' => $details], 200);
         }
         else{

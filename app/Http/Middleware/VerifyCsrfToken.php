@@ -13,6 +13,7 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         '/api/auth/otp',
-        '/api/auth/check-otp'
+        '/api/auth/check-otp',
+        'api/reset-link'
     ];
 }

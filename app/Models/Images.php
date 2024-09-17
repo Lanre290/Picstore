@@ -9,7 +9,7 @@ class Images extends Model
 {
     use HasFactory;
 
-    protected $table = 'user';
+    protected $table = 'images';
 
     public $timestamps = false;
 

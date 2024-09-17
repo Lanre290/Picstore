@@ -13,5 +13,5 @@ class Events extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['id', 'user_id', 'event_link', 'title'];
+    protected $fillable = ['id', 'user_id', 'event_link', 'date', 'title', 'timestamp'];
 }
