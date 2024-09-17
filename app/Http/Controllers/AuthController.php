@@ -105,7 +105,7 @@ class AuthController extends Controller
         ]);  
 
         $token = $request->token;
-        if(Hash::equals($token, session('user_details')['otp'])){
+        if(Hash::check($token, session('user_details')['otp'])){
             $details = session('user_details');
             Users::create($details);
             session(['user_details' => null]);
