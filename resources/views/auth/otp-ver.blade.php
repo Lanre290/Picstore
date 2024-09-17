@@ -2,7 +2,7 @@
 
 <body class="w-screen h-screen flex flex-col justify-center items-center">
     @include('includes.topnav')
-    <h3 class="text-gray-90 mx-auto w-fit text-center md:w-2/5">We sent a One time passcode to <span class="text-blue-400 mx-1">lanre2967@gmail.com</span>, Enter the code you receive in the spaces below.</h3>
+    <h3 class="text-gray-90 mx-auto w-fit text-center md:w-2/5">We sent a One time passcode to <span class="text-blue-400 mx-1">{{ session('user_details')['email'] }}</span>, Enter the code you receive in the spaces below.</h3>
     <a href="https://mail.google.com/mail/" target="_blank" class="px-3 py-2 border border-gray-500 mx-auto rounded-md mt-4 mb-7 flex flex-row items-center justify-center hover:bg-gray-100">
         <img src="{{asset('img/google.png')}}" alt="google-logo" class="w-5 h-5 md:w-8 md:h-8 mr-2">
         Open G-mail

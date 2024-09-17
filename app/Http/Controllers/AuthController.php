@@ -42,7 +42,7 @@ class AuthController extends Controller
         session(['user_details' => [
             'name' => $name,
             'email' => $email,
-            'pwd' => Hash::make($pwd)
+            'pwd' => $pwd
         ]]);
 
         $this->OTP($email);
