@@ -12,7 +12,7 @@ Picstore is a Laravel-based app where users can create events and generate a sha
 
 - **Backend:** Laravel
 - **Frontend:** Blade (Laravel templating engine)
-- **Database:** (Specify your database, e.g., MySQL, PostgreSQL)
+- **Database:** MYSQL
 
 ## Installation
 
