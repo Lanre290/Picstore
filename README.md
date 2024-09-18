@@ -18,7 +18,7 @@ Picstore is a Laravel-based app where users can create events and generate a sha
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/picstore.git
+    git clone https://github.com/lanre290/picstore.git
     ```
 
 2. Navigate to the project directory:
