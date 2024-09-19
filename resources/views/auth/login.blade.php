@@ -1,9 +1,13 @@
 @include('includes.preauth-header', ['url' => 'Login to your Picstore account', 'js' => asset('js/login.js')])
 
-
+@if (null != session('user'))
+    <script>
+        window.location.href = '/dashboard';
+    </script>
+@endif
 
 <body class="w-screen h-screen flex flex-col justify-center items-center">
-    <form action="{{ route('auth/login') }}" method="POST" id="login-form" class="w-full md:w-4/6 lg:w-5/12 h-screen flex flex-col items-center justify-center">
+    <form action="{{ route('api/auth/login') }}" method="POST" id="login-form" class="w-full md:w-4/6 lg:w-5/12 h-screen flex flex-col items-center justify-center" onsubmit="validateSignIn()">
         @csrf
         <div class="text-xl md:text-4xl text-gray-900 mx-auto mb-7 flex flex-row font-light">Log into your&nbsp;<span class="flex flex-col justify-center"><img src="{{asset('img/favicon.png')}}" alt="picstore-logo" class="w-5 h-5 md:w-8 md:h-8"></span> Picstore account</div>
         <input type="text" name="email" id="email" placeholder="Email..." class="p-4 text-gray-800 bg-gray-900 bg-opacity-5 w-5/6 mx-auto mb-4"/>

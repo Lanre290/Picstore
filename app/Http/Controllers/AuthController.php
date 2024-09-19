@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OTPMail;
+use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Models\Users;
-use App\Models\ForgottenPasswordModel;
-use App\Http\Controllers\userActions;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use App\Mail\OTPMail;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\userActions;
+use App\Models\ForgottenPasswordModel;
+use App\Http\Controllers\AuthController;
 
 
 class AuthController extends Controller
@@ -59,38 +60,35 @@ class AuthController extends Controller
     }
 
     public function login(Request $request){
-        try {
-            $request->validate([
-                'email' => 'required|string',
-                'pwd' => 'required|string'
-            ]);
-    
-            $email = $request->email;
-            $pwd = $request->pwd;
-    
-            if(empty($email) || empty($pwd)){
-                return response()->json(['error' => 'Error processing data.','data' => ''], 422);
+        $request->validate([
+            'email' => 'required|string',
+            'pwd' => 'required|string'
+        ]);
+
+
+        $email = $request->email;
+        $pwd = $request->pwd;
+
+        if(empty($email) || empty($pwd)){
+            return response()->json(['error' => 'Error processing data.','data' => ''], 422);
+        }
+        else{
+            $emailExists = Users::where('email', $email)->count();
+            if($emailExists < 1){
+                return response()->json(['error' => 'Email does not exist.', 'data' => ''], 404);
             }
             else{
-                $emailExists = Users::where('email', $email)->count();
-                if($emailExists < 1){
-                    return response()->json(['error' => 'Email does not exist.', 'data' => ''], 404);
+                $Hashedpwd = Users::where('email', $email)->pluck('pwd')->first();
+                
+                if(Hash::check($pwd, $Hashedpwd)){
+                    $userData = Users::where('email', $email)->select('id','email','name')->first();
+                    session(['user' => $userData]);
+                    return response(['data' => true], 200);
                 }
                 else{
-                    $Hashedpwd = Users::where('email', $email)->pluck('pwd')->first();
-                    
-                    if(Hash::check($pwd, $Hashedpwd)){
-                        $userData = Users::where('email', $email)->select('id','email','name')->first();
-                        session(['user' => $userData]);
-                        return response(['data' => true], 200);
-                    }
-                    else{
-                        return response(['error' => 'Incorrect password.', 'data' => ''], 404);
-                    }
+                    return response(['error' => 'Incorrect password.', 'data' => ''], 404);
                 }
             }
-        } catch (\Throwable $th) {
-            return response(['error' => $th]);
         }
     }
 

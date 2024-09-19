@@ -20,8 +20,8 @@ Route::post('/api/auth/check-otp', [AuthController::class, 'verifyOTP'])->name('
 
 Route::prefix('/api')->group(function(){
     // Authentication routes
-    Route::post('auth/signup', [AuthController::class, 'signup'])->name('auth/sign-up');
-    Route::post('auth/login', [AuthController::class, 'login'])->name('auth/login');
+    Route::post('auth/signup', [AuthController::class, 'signup'])->name('api/auth/sign-up');
+    Route::post('auth/login', [AuthController::class, 'login'])->name('api/auth/login');
 
     //Upload image route
     Route::post('upload-image', [UserActions::class, 'uploadImage'])->name('api/upload-image');

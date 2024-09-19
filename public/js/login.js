@@ -1,5 +1,4 @@
 
-const form = document.getElementById('login-form');
 const signInButton = document.getElementById('loginbtn');
 
 async function validateSignIn(event){
@@ -25,10 +24,11 @@ async function validateSignIn(event){
         if(!validateEmail(email)){
             throw new Error('Invalid Email.');
         }
+        let form = document.getElementById('login-form');
         const formData = new FormData(form);
 
-        try {
-            const response = await fetch("auth/login", {
+        // try {
+            const response = await fetch("/api/auth/login", {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -36,24 +36,28 @@ async function validateSignIn(event){
                 }
             });
 
-
             if (response.ok) {
-                window.location.href = '/home';
+                // window.location.href = '/dashboard';
+                console.log(await response.json());
+
             } else {
-                const errorData = await response.json();
-                signInButton.removeAttribute('disabled');
-                signInButton.classList.remove('bg-blue-200');
-                throw new Error(errorData.error);
+                let res = await response.json();
+                console.error(res);
+                // const errorData = await response.json();
+                // signInButton.removeAttribute('disabled');
+                // signInButton.classList.remove('bg-blue-200');
+                // throw new Error(errorData.error);
             }
-        } catch (error) {
-            toastr.error(error);
-        }
-        finally{
-            signInButton.disabled = false;
-            signInButton.style.backgroundColor = 'rgb(59 130 246)';
-            signInButton.style.cursor = 'pointer';
-            signInButton.innerHTML = 'Log in';
-        }
+        // } catch (error) {
+        //     toastr.error(error);
+        //     console.error(error)
+        // }
+        // finally{
+        //     signInButton.disabled = false;
+        //     signInButton.style.backgroundColor = 'rgb(59 130 246)';
+        //     signInButton.style.cursor = 'pointer';
+        //     signInButton.innerHTML = 'Log in';
+        // }
     } catch (error) {
         toastr.error(error);
         signInButton.removeAttribute('disabled');
@@ -62,5 +66,4 @@ async function validateSignIn(event){
 
 }
 
-form.addEventListener('submit', validateSignIn);
 signInButton.addEventListener('click', validateSignIn);

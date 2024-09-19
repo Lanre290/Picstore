@@ -28,7 +28,7 @@ async function validateSignIn(event){
         const formData = new FormData(form);
 
         try {
-            const response = await fetch("api/auth/login", {
+            const response = await fetch("/api/auth/login", {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -62,5 +62,4 @@ async function validateSignIn(event){
 
 }
 
-form.addEventListener('submit', validateSignIn);
 signInButton.addEventListener('click', validateSignIn);

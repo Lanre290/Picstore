@@ -32,7 +32,7 @@ async function validateSignUp(event){
             signupButton.disabled = true;
             signupButton.style.backgroundColor = 'rgb(191, 219, 254)';
             signupButton.style.cursor = 'not-allowed';
-            const response = await fetch("api/auth/signup", {
+            const response = await fetch("/api/auth/signup", {
                 method: 'POST',
                 body: formData,
                 headers: {
