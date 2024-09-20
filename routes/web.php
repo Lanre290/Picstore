@@ -13,7 +13,7 @@ Route::get('/', function () {
     return redirect('/dashboard');
 });
 
-
+Route::get('/forgot-password/{id}', 'Views@forgotPassword');
 
 Route::post('/api/auth/otp', [AuthController::class, 'OTP'])->name('api/auth/otp');
 Route::post('/api/auth/check-otp', [AuthController::class, 'verifyOTP'])->name('api/auth/check-otp');

@@ -28,12 +28,15 @@ class OTPMail extends Mailable
     {
         $arr = explode(' ', $this->user['name']);
         $name= count($arr) > 1 ? $arr[1] : $arr[0];
+        $id = $this->user->pid;
+        $link = route('/forgot-password', ['id' => $id]);
 
         // Return the view with the necessary data
         return $this->subject('Verify your Email')
                     ->view('auth.forgot-password')
                     ->with([
                         'name' => $name,
+                        'link' => $link
                     ]);
     }
 }

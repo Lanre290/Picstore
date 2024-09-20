@@ -151,11 +151,12 @@ class AuthController extends Controller
             $token = $this->userActions->generateLink();
             $data['link'] = $token;
             
-            ForgottenPasswordModel::create([
+            $fg = ForgottenPasswordModel::create([
                 'email' => $email,
                 'token' => $token,
                 'time' => time() + (60 * 60)
             ]);
+            $data['id'] = $fg->pid;
             $result = Mail::to($email)->send(new forgotPasswordMail($data));
         }
     }

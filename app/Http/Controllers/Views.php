@@ -67,4 +67,8 @@ class Views extends Controller
             return redirect('/login');
         }
     }
+
+    public function forgotPassword($id){
+        
+    }
 }
