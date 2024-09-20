@@ -12,13 +12,13 @@ Picstore is a Laravel-based app where users can create events and generate a sha
 
 - **Backend:** Laravel
 - **Frontend:** Blade (Laravel templating engine)
-- **Database:** (Specify your database, e.g., MySQL, PostgreSQL)
+- **Database:** MYSQL
 
 ## Installation
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/picstore.git
+    git clone https://github.com/lanre290/picstore.git
     ```
 
 2. Navigate to the project directory:
