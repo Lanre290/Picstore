@@ -20,7 +20,7 @@
             @endif
             @foreach ($events as $event)
                     <a href="/event/{{$event->event_link}}" class="w-full text-gray-900 hover:underline border-b h-14 px-4 flex flex-row justify-between items-center hover:bg-gray-100 ">
-                        {{$event->date}}
+                        {{ $event->title }} - {{$event->date}}
                     </a>
             @endforeach
         </div>

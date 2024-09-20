@@ -40,7 +40,7 @@ class Views extends Controller
 
     public function dashboard(){
         if (null != session('user')) {
-            $events = Events::where('user_id', session('user')->id)->get();
+            $events = Events::where('user_id', session('user')->id)->orderBy('timestamp', 'DESC')->get();
             $count = Events::where('user_id', session('user')->id)->count();
 
             return view('index.dashboard', ['events' => $events, 'count' => $count]);

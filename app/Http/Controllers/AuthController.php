@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\userActions;
+
+
 use App\Mail\OTPMail;
 use App\Models\Users;
 use Illuminate\Http\Request;
@@ -10,7 +13,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Http\Controllers\userActions;
 use App\Models\ForgottenPasswordModel;
 use App\Http\Controllers\AuthController;
 
@@ -65,6 +67,7 @@ class AuthController extends Controller
             'pwd' => 'required|string'
         ]);
 
+        
 
         $email = $request->email;
         $pwd = $request->pwd;
@@ -117,6 +120,11 @@ class AuthController extends Controller
         if(Hash::check($token, session('user_details')['otp'])){
             $details = session('user_details');
             $user = Users::create($details);
+            $email = $user->email;
+            $new_pwd = Hash::make($user->pwd);
+            Users::where('email', $email)->update([
+                'pwd' => $new_pwd
+            ]);
             session(['user_details' => null]);
             session(['user' => $user]);
             return response()->json(['response' => 'ok', 'user_data' => $details], 200);
@@ -165,7 +173,7 @@ class AuthController extends Controller
         else{
 
             $response = Users::where('id', $id)->update([
-
+                'pwd' => Hash::make($pwd)
             ]);
         }
     }

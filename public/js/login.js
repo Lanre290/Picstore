@@ -24,10 +24,11 @@ async function validateSignIn(event){
         if(!validateEmail(email)){
             throw new Error('Invalid Email.');
         }
+        
         let form = document.getElementById('login-form');
         const formData = new FormData(form);
 
-        // try {
+        try {
             const response = await fetch("/api/auth/login", {
                 method: 'POST',
                 body: formData,
@@ -37,8 +38,7 @@ async function validateSignIn(event){
             });
 
             if (response.ok) {
-                // window.location.href = '/dashboard';
-                console.log(await response.json());
+                window.location.href = '/dashboard';
 
             } else {
                 let res = await response.json();
@@ -48,16 +48,16 @@ async function validateSignIn(event){
                 // signInButton.classList.remove('bg-blue-200');
                 // throw new Error(errorData.error);
             }
-        // } catch (error) {
-        //     toastr.error(error);
-        //     console.error(error)
-        // }
-        // finally{
-        //     signInButton.disabled = false;
-        //     signInButton.style.backgroundColor = 'rgb(59 130 246)';
-        //     signInButton.style.cursor = 'pointer';
-        //     signInButton.innerHTML = 'Log in';
-        // }
+        } catch (error) {
+            toastr.error(error);
+            console.error(error)
+        }
+        finally{
+            signInButton.disabled = false;
+            signInButton.style.backgroundColor = 'rgb(59 130 246)';
+            signInButton.style.cursor = 'pointer';
+            signInButton.innerHTML = 'Log in';
+        }
     } catch (error) {
         toastr.error(error);
         signInButton.removeAttribute('disabled');
