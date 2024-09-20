@@ -67,3 +67,37 @@ async function validateSignIn(event){
 }
 
 signInButton.addEventListener('click', validateSignIn);
+
+
+async function forgotPassword(){
+    try {
+        let email = document.getElementById('email').value;
+
+        if(email.length  <1){
+            throw new Error('Email field is required.');
+        }
+
+        let formData = new FormData();
+        formData.append('email', email);
+
+        const response = await fetch("/api/forgot-password", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+            }
+        });
+
+
+        if (response.ok) {
+            window.location.href = '/pwd-link-sent';
+        }
+        else{
+
+            let res = await response.json();
+            toastr.error(res.error);
+        }
+    } catch (error) {
+        toastr.error(error);
+    }
+}

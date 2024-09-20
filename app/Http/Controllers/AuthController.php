@@ -156,7 +156,7 @@ class AuthController extends Controller
                 'token' => $token,
                 'time' => time() + (60 * 60)
             ]);
-            $data['id'] = $fg->pid;
+            $data['pid'] = $fg->id;
             $result = Mail::to($email)->send(new forgotPasswordMail($data));
         }
     }

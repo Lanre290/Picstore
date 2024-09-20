@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Redirect;
 use App\Models\Images;
 use App\Models\Events;
+use App\Models\ForgottenPasswordModel;
 
 class Views extends Controller
 {
@@ -69,6 +70,17 @@ class Views extends Controller
     }
 
     public function forgotPassword($id){
-        
+        $isExists = ForgottenPasswordModel::where('id', $id)->count() > 0;
+
+        if($isExists == true){
+            return view('auth.reset-password-view');
+        }
+        else{
+            return view('404.index');
+        }
+    }
+
+    public function passwordLinkSent(){
+        return view('auth.sent-password-link');
     }
 }

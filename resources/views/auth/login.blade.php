@@ -18,6 +18,9 @@
             <span class="">Don't Have an account?</span>
             <a class="text-blue-500" href="{{ route('signup') }}">Sign up</a>
         </div>
+        
+        <a class="text-blue-500 mt-5 hover:underline cursor-pointer" id="forgot-password-link" onclick="forgotPassword()">Forgot password?</a>
     </form>
     <script src="{{ asset('js/login.js') }}"></script>
 </body>
+

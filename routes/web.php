@@ -14,6 +14,7 @@ Route::get('/', function () {
 });
 
 Route::get('/forgot-password/{id}', 'Views@forgotPassword');
+Route::get('password-link-sent', 'Views@passwordLinkSent')->name('/pwd-link-sent');
 
 Route::post('/api/auth/otp', [AuthController::class, 'OTP'])->name('api/auth/otp');
 Route::post('/api/auth/check-otp', [AuthController::class, 'verifyOTP'])->name('api/auth/check-otp');
@@ -28,6 +29,7 @@ Route::prefix('/api')->group(function(){
     Route::post('reset-link', [UserActions::class, 'resetLink'])->name('api/reset-link');
     Route::post('create-event', [UserActions::class, 'createEvent'])->name('api/create-event');
     Route::post('forgot-password', [AuthController::class, 'forgotPassword'])->name('api/forgot-password');
+    Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('api/reset-password');
 });
 
 
