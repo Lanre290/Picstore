@@ -22,6 +22,16 @@ function closeImageFs(){
    document.getElementById('image_fs_cont').style.display = 'none'; 
 };
 
+function downloadImageFs(){
+    let parent = document.getElementById('image_fs_cont');
+    let img = parent.querySelector('img');
+
+    let anchor = document.createElement('a');
+    anchor.download = img.src;
+    anchor.href = img.src;
+    anchor.click();
+}
+
 function stopPropagation(event){
     event.stopPropagation();
 }

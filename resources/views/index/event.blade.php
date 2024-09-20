@@ -68,6 +68,9 @@
         <button class="cursor-pointer text-5xl md:text-7xl text-gray-50 h-24 w-24 flex items-center justify-center p-4 hover:bg-gray-200 rounded-full hover:bg-opacity-50 absolute top-2 right-2 z-50" onclick="closeImageFs()">
             <i class="fa fa-close"></i>
         </button>
+        <button class="cursor-pointer text-4xl md:text-6xl text-gray-50 h-24 w-24 flex items-center justify-center p-4 hover:bg-gray-200 rounded-full hover:bg-opacity-50 absolute top-2 right-28 z-50" onclick="downloadImageFs()">
+            <i class="fa fa-download"></i>
+        </button>
     </div>
 
 
