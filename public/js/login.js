@@ -70,7 +70,7 @@ signInButton.addEventListener('click', validateSignIn);
 
 
 async function forgotPassword(){
-    try {
+    // try {
         let email = document.getElementById('email').value;
 
         if(email.length  <1){
@@ -90,14 +90,15 @@ async function forgotPassword(){
 
 
         if (response.ok) {
-            window.location.href = '/pwd-link-sent';
+            window.location.href = '/passwordd-link-sent';
         }
         else{
 
             let res = await response.json();
+            console.error(res);
             toastr.error(res.error);
         }
-    } catch (error) {
-        toastr.error(error);
-    }
+    // } catch (error) {
+    //     toastr.error(error);
+    // }
 }

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\userActions;
+use App\Http\Controllers\UserActions;
 
 
 use App\Mail\OTPMail;
+use App\Mail\forgotPasswordMail;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -21,7 +22,7 @@ class AuthController extends Controller
 {
 
     protected $userActions;
-    public function __construct(Views $userActions){
+    public function __construct(UserActions $userActions){
         // Dependency inject for userActions controller
         $this->userActions = $userActions;
     }
@@ -158,6 +159,7 @@ class AuthController extends Controller
             ]);
             $data['pid'] = $fg->id;
             $result = Mail::to($email)->send(new forgotPasswordMail($data));
+            return redirect(route('/passwordd-link-sent')->with());
         }
     }
 

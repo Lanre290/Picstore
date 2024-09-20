@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Hash;
 
-class OTPMail extends Mailable
+class forgotPasswordMail extends Mailable
 {
     use Queueable, SerializesModels;
 
