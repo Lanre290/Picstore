@@ -20,6 +20,7 @@
     <form action="{{ route('api/reset-password') }}" method="POST" id="reset-pwd-form" class="w-full md:w-4/6 lg:w-5/12 h-screen flex flex-col items-center justify-center" onsubmit="validatePwdReset()">
         @csrf
         <div class="text-xl md:text-4xl text-gray-900 mx-auto mb-7 flex flex-row font-light">Reset your password</div>
+        <input type="hidden" name="id" value="{{$user->id}}">
         <input type="password" id="pwd" placeholder="Password..." class="p-4 text-gray-800 bg-gray-900 bg-opacity-5 w-5/6 mx-auto mb-4"/>
         <input type="password" name="pwd" id="repeat-pwd" placeholder="Repeat password..." class="p-4 text-gray-800 bg-gray-900 bg-opacity-5 w-5/6 mx-auto mb-4"/>
 
@@ -29,7 +30,8 @@
 
 
     <script>
-        async function validatePwdReset(){
+        async function validatePwdReset(event){
+            event.preventDefault();
             try {
                 let formData = new FormData(document.getElementById('reset-pwd-form'));
                 let pwd = document.getElementById('pwd').value;

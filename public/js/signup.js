@@ -45,12 +45,10 @@ async function validateSignUp(event){
                 window.location.replace('/otp');
             } else {
                 const errorData = await response.json();
-                console.log(errorData);
                 signupButton.removeAttribute('disabled');
                 throw new Error(response.statusText == 'Internal Server Error' ? 'Please check your internet and try again.' : errorData.error);
             }
         } catch (error) {
-            console.error(error);
             toastr.error(error);
         }
     } catch (error) {

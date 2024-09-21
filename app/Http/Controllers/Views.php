@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Redirect;
 use App\Models\Images;
 use App\Models\Events;
+use App\Models\Users;
 use App\Models\ForgottenPasswordModel;
 
 class Views extends Controller
@@ -79,7 +80,10 @@ class Views extends Controller
             $response = ForgottenPasswordModel::where('id', $id)->update([
                 'status' => 'expired'
             ]);
-            return view('auth.reset-password-view');
+            $data = ForgottenPasswordModel::where('id', $id)->first();
+            $email = $data->email;
+            $user = Users::where('email', $email)->first();
+            return view('auth.reset-password-view')->with(['data' => $data, 'user' => $user]);
         }
         else{
             return view('404.index');

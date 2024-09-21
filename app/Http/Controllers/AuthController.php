@@ -175,9 +175,11 @@ class AuthController extends Controller
     public function resetPassword(Request $request){
         $request->validate([
             'pwd' => 'string|required',
+            'id' => 'integer|required',
         ]);
 
         $pwd = $request->pwd;
+        $id = $request->id;
 
         if(empty($pwd)){
             return response()->json(['error' => 'Unexpected response.'], 500);
@@ -186,6 +188,7 @@ class AuthController extends Controller
             $response = Users::where('id', $id)->update([
                 'pwd' => Hash::make($pwd)
             ]);
+            return redirect('/login');
         }
     }
 

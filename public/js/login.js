@@ -41,16 +41,13 @@ async function validateSignIn(event){
                 window.location.replace('/dashboard');
 
             } else {
-                let res = await response.json();
-                console.error(res);
-                // const errorData = await response.json();
-                // signInButton.removeAttribute('disabled');
-                // signInButton.classList.remove('bg-blue-200');
-                // throw new Error(errorData.error);
+                const errorData = await response.json();
+                signInButton.removeAttribute('disabled');
+                signInButton.classList.remove('bg-blue-200');
+                throw new Error(errorData.error);
             }
         } catch (error) {
             toastr.error(error);
-            console.error(error)
         }
         finally{
             signInButton.disabled = false;
@@ -96,7 +93,6 @@ async function forgotPassword(){
         else{
 
             let res = await response.json();
-            console.error(res);
             toastr.error(res.error);
             document.getElementById('loading').style.display = 'none';
         }

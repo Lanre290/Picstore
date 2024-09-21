@@ -23,6 +23,7 @@ Route::prefix('/api')->group(function(){
     // Authentication routes
     Route::post('auth/signup', [AuthController::class, 'signup'])->name('api/auth/sign-up');
     Route::post('auth/login', [AuthController::class, 'login'])->name('api/auth/login');
+    Route::post('auth/logout', [AuthController::class, 'logout'])->name('api/auth/logout');
 
     //Upload image route
     Route::post('upload-image', [UserActions::class, 'uploadImage'])->name('api/upload-image');
