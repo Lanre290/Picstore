@@ -14,7 +14,7 @@ Route::get('/', function () {
 });
 
 Route::get('/forgot-password/{id}', [Views::class, 'forgotPassword'])->name('/forgot-password');
-Route::get('/password-link-sent', [Views::class, 'passwordLinkSent'])->name('/pwd-link-sent');
+Route::get('/password-link-sent', [Views::class, 'passwordLinkSent'])->name('/password-link-sent');
 
 Route::post('/api/auth/otp', [AuthController::class, 'OTP'])->name('api/auth/otp');
 Route::post('/api/auth/check-otp', [AuthController::class, 'verifyOTP'])->name('api/auth/check-otp');

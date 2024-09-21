@@ -90,7 +90,7 @@ async function forgotPassword(){
 
 
         if (response.ok) {
-            window.location.href = '/passwordd-link-sent';
+            window.location.href = '/password-link-sent';
         }
         else{
 

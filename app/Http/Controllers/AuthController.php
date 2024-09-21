@@ -155,11 +155,14 @@ class AuthController extends Controller
             $fg = ForgottenPasswordModel::create([
                 'email' => $email,
                 'token' => $token,
-                'time' => time() + (60 * 60)
+                'time' => time() + (60 * 60 * 24 * 30)
             ]);
             $data['pid'] = $fg->id;
             $result = Mail::to($email)->send(new forgotPasswordMail($data));
-            return redirect(route('/passwordd-link-sent')->with());
+            session([
+                'password_reset' => $fg
+            ]);
+            return redirect(route('/password-link-sent'));
         }
     }
 

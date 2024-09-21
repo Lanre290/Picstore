@@ -1,8 +1,23 @@
-@include('includes.preauth-header', ['js' => 'resetPassword.js', 'url' => 'Reset your password'])
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="shortcut icon" href="{{asset('img/favicon.png') }}" type="image/x-icon">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="resetPassword.js"></script>
+    <title>Reset your password</title>
+</head>
 
 
 <body class="w-screen h-screen flex flex-col justify-center items-center">
-    <form action="{{ route('/api/reset-password') }}" method="POST" id="reset-pwd-form" class="w-full md:w-4/6 lg:w-5/12 h-screen flex flex-col items-center justify-center" onsubmit="validatePwdReset()">
+    <form action="{{ route('api/reset-password') }}" method="POST" id="reset-pwd-form" class="w-full md:w-4/6 lg:w-5/12 h-screen flex flex-col items-center justify-center" onsubmit="validatePwdReset()">
         @csrf
         <div class="text-xl md:text-4xl text-gray-900 mx-auto mb-7 flex flex-row font-light">Reset your password</div>
         <input type="password" id="pwd" placeholder="Password..." class="p-4 text-gray-800 bg-gray-900 bg-opacity-5 w-5/6 mx-auto mb-4"/>
