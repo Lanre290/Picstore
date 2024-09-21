@@ -7,6 +7,8 @@ Picstore is a Laravel-based app where users can create events and generate a sha
 - User Authentication (Sign Up, Log In)
 - Event Creation with Unique Shareable Links
 - Attendees Can Upload Photos to the Event Gallery
+- Forgot password feature
+- OTP verification for user authentication
 
 ## Tech Stack
 
