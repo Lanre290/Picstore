@@ -42,7 +42,7 @@ async function validateSignUp(event){
 
 
             if (response.ok) {
-                window.location.href = '/otp';
+                window.location.replace('/otp');
             } else {
                 const errorData = await response.json();
                 console.log(errorData);

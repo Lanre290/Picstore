@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('token');
             $table->integer('time');
+            $table->string('status')->default('valid');
             $table->timestamps();
         });
     }

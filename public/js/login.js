@@ -38,7 +38,7 @@ async function validateSignIn(event){
             });
 
             if (response.ok) {
-                window.location.href = '/dashboard';
+                window.location.replace('/dashboard');
 
             } else {
                 let res = await response.json();
@@ -70,13 +70,14 @@ signInButton.addEventListener('click', validateSignIn);
 
 
 async function forgotPassword(){
-    // try {
+    try {
         let email = document.getElementById('email').value;
 
         if(email.length  <1){
             throw new Error('Email field is required.');
         }
 
+        document.getElementById('loading').style.display = 'flex';
         let formData = new FormData();
         formData.append('email', email);
 
@@ -97,8 +98,10 @@ async function forgotPassword(){
             let res = await response.json();
             console.error(res);
             toastr.error(res.error);
+            document.getElementById('loading').style.display = 'none';
         }
-    // } catch (error) {
-    //     toastr.error(error);
-    // }
+    } catch (error) {
+        toastr.error(error);
+        document.getElementById('loading').style.display = 'none';
+    }
 }

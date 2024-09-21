@@ -1,4 +1,5 @@
 @include('includes.preauth-header', ['url' => 'Login to your Picstore account', 'js' => asset('js/login.js')])
+@include('includes.loading')
 
 @if (null != session('user'))
     <script>
@@ -19,7 +20,7 @@
             <a class="text-blue-500" href="{{ route('signup') }}">Sign up</a>
         </div>
         
-        <a class="text-blue-500 mt-5 hover:underline cursor-pointer" id="forgot-password-link" onclick="forgotPassword()">Forgot password?</a>
+        <a class="text-blue-500 hover:underline cursor-pointer" id="forgot-password-link" onclick="forgotPassword()">Forgot password?</a>
     </form>
     <script src="{{ asset('js/login.js') }}"></script>
 </body>

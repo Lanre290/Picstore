@@ -148,21 +148,27 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unexpected response.'], 500);
         }
         else{
-            $data = Users::where('email', $email)->first();
-            $token = $this->userActions->generateLink();
-            $data['link'] = $token;
-            
-            $fg = ForgottenPasswordModel::create([
-                'email' => $email,
-                'token' => $token,
-                'time' => time() + (60 * 60 * 24 * 30)
-            ]);
-            $data['pid'] = $fg->id;
-            $result = Mail::to($email)->send(new forgotPasswordMail($data));
-            session([
-                'password_reset' => $fg
-            ]);
-            return redirect(route('/password-link-sent'));
+            $emailExists = Users::where('email', $email)->count();
+            if($emailExists < 1){
+                return response()->json(['error' => 'Email does not exist.', 'data' => ''], 404);
+            }
+            else{
+                $data = Users::where('email', $email)->first();
+                $token = $this->userActions->generateLink();
+                $data['link'] = $token;
+                
+                $fg = ForgottenPasswordModel::create([
+                    'email' => $email,
+                    'token' => $token,
+                    'time' => time() + (60 * 60 * 24 * 30)
+                ]);
+                $data['pid'] = $fg->id;
+                $result = Mail::to($email)->send(new forgotPasswordMail($data));
+                session([
+                    'password_reset' => $fg
+                ]);
+                return redirect(route('/password-link-sent'));
+            }
         }
     }
 
@@ -177,7 +183,6 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unexpected response.'], 500);
         }
         else{
-
             $response = Users::where('id', $id)->update([
                 'pwd' => Hash::make($pwd)
             ]);

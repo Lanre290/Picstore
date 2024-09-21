@@ -72,9 +72,13 @@ class Views extends Controller
     public function forgotPassword($id){
         $isExists = ForgottenPasswordModel::where('id', $id)->count() > 0;
         $notExpired = time() < ForgottenPasswordModel::where('id', $id)->pluck('time')->first();
+        $notExpired2 = ForgottenPasswordModel::where('id', $id)->pluck('status')[0] != 'expired';
 
-
-        if($isExists == true && $notExpired){
+        
+        if($isExists == true && $notExpired == true && $notExpired2 == true){
+            $response = ForgottenPasswordModel::where('id', $id)->update([
+                'status' => 'expired'
+            ]);
             return view('auth.reset-password-view');
         }
         else{
